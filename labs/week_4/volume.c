@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
 
     float factor = atof(argv[3]);
 
-    uint8_t header[44]; // will hold 44 bytes
-    uint16_t buffer; // can read in two bytes at a time to this, multiply by two, then write to output
+    uint8_t header[44];
+    uint16_t buffer;
 
     fread(header, sizeof(uint8_t), HEADER_SIZE, input);
     fwrite(header, sizeof(uint8_t), HEADER_SIZE, output);
