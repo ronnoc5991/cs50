@@ -9,7 +9,6 @@ number_of_digits = len(digits)
 sum_of_product_digits = 0
 
 for i in range(number_of_digits - 2, -1, -2):
-    # multiply the number by 2, then add those digits to the sum
     product = digits[i] * 2
     for j in str(product):
         sum_of_product_digits += int(j)
