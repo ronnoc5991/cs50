@@ -1,33 +1,41 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
 
-long get_card_number();
-bool is_valid_card_number(long card_number);
-bool is_american_express(long card_number);
-bool is_visa(long card_number);
-bool is_mastercard(long card_number);
 int get_number_of_digits_in_long(long number);
+bool is_valid_card_number(long card_number);
+bool is_american_express(long card_number, int digits_in_card_number);
+bool is_mastercard(long card_number, int digits_in_card_number);
+bool is_visa(long card_number, int digits_in_card_number);
 
-int main(void)
+int main(int argc, char **argv)
 {
-    long card_number = get_card_number();
+    if (argc != 2)
+    {
+        printf("Usage: ./credit card_number_to_test\n");
+        return 1;
+    }
+
+    char *remainder;
+    long card_number = strtol(argv[1], &remainder, 10);
 
     bool is_valid = is_valid_card_number(card_number);
+    int digits_in_card_number = get_number_of_digits_in_long(card_number);
 
     if (!is_valid)
     {
         printf("INVALID\n");
     }
-    else if (is_american_express(card_number))
+    else if (is_american_express(card_number, digits_in_card_number))
     {
         printf("AMEX\n");
     }
-    else if (is_visa(card_number))
+    else if (is_visa(card_number, digits_in_card_number))
     {
         printf("VISA\n");
     }
-    else if (is_mastercard(card_number))
+    else if (is_mastercard(card_number, digits_in_card_number))
     {
         printf("MASTERCARD\n");
     }
@@ -35,19 +43,6 @@ int main(void)
     {
         printf("VALID\n");
     }
-}
-
-long get_card_number()
-{
-    long user_input;
-
-    do
-    {
-        printf("Enter card number: ");
-        scanf("%ld", &user_input);
-    } while (user_input < 0);
-
-    return user_input;
 }
 
 bool is_valid_card_number(long card_number)
@@ -83,24 +78,21 @@ bool is_valid_card_number(long card_number)
     return final_sum % 10 == 0;
 }
 
-bool is_american_express(long card_number)
+bool is_american_express(long card_number, int digits_in_card_number)
 {
-    int number_of_digits = get_number_of_digits_in_long(card_number);
-    int first_two_digits = card_number / pow(10, number_of_digits - 2);
+    int first_two_digits = card_number / pow(10, digits_in_card_number - 2);
     return first_two_digits == 34 || first_two_digits == 37;
 }
 
-bool is_visa(long card_number)
+bool is_visa(long card_number, int digits_in_card_number)
 {
-    int number_of_digits = get_number_of_digits_in_long(card_number);
-    int first_digit = card_number / pow(10, number_of_digits - 1);
+    int first_digit = card_number / pow(10, digits_in_card_number - 1);
     return first_digit == 4;
 }
 
-bool is_mastercard(long card_number)
+bool is_mastercard(long card_number, int digits_in_card_number)
 {
-    int number_of_digits = get_number_of_digits_in_long(card_number);
-    int first_two_digits = card_number / pow(10, number_of_digits - 2);
+    int first_two_digits = card_number / pow(10, digits_in_card_number - 2);
     return first_two_digits == 51 || first_two_digits == 52 || first_two_digits == 53 || first_two_digits == 54 || first_two_digits == 55;
 }
 
